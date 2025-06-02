@@ -3,7 +3,7 @@ from scipy.io.wavfile import write
 from huggingface_hub import InferenceClient
 
 # Set your HF token here
-HF_TOKEN = "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"
+HF_TOKEN = ""
 
 # Recording params
 duration = 5  # seconds
