@@ -6,6 +6,9 @@ import Page2 from './pages/Page2';
 import Page3 from './pages/Page3';
 import ConfidenceTracker from './pages/ConfidenceTracker';
 import LoginPage from './pages/LoginPage';
+import Chat from './pages/Models/Chat'
+import Interview from './pages/Models/InterView';
+import InterView2 from './pages/Models/InterView2';
 
 function App() {
   return (
@@ -61,6 +64,33 @@ function App() {
       </Link>
      
     </li>
+    <li>
+      <Link
+        to="/chat"
+        className="px-4 py-2 border border-red-500 text-red-600 rounded hover:bg-red-100 transition duration-200"
+      >
+          Chat
+      </Link>
+     
+    </li>
+    <li>
+      <Link
+        to="/interview"
+        className="px-4 py-2 border border-red-500 text-red-600 rounded hover:bg-red-100 transition duration-200"
+      >
+          Interview-Chat1
+      </Link>
+     
+    </li>
+    <li>
+      <Link
+        to="/interview2"
+        className="px-4 py-2 border border-red-500 text-red-600 rounded hover:bg-red-100 transition duration-200"
+      >
+          Interview-Chat2
+      </Link>
+     
+    </li>
   </ul>
 </nav>
 
@@ -71,6 +101,9 @@ function App() {
           <Route path="/member3" element={<Page3 />} />
           <Route path="/member4" element={<ConfidenceTracker />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/interview" element={<Interview />} />
+          <Route path="/interview2" element={<InterView2 />} />
         </Routes>
       </div>
     </Router>
