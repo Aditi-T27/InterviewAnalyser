@@ -1,0 +1,1 @@
+you So, we have a question. SDE are basically a compiler technique where we pass tokens, which are previously passed with accurate results. And we consider these tokens for validating a state and getting a new information for the input basically to minimize the errors.

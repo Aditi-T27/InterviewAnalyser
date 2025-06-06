@@ -17,7 +17,7 @@ function App() {
     
    <nav className="bg-gray-100 shadow-md p-4 rounded-md">
   <ul className="flex gap-4 justify-center">
-        <li>
+        {/* <li>
   
        HomePage
      
@@ -54,7 +54,7 @@ function App() {
         Go to Member 4 Work
       </Link>
      
-    </li>
+    </li> */}
     <li>
       <Link
         to="/login"
@@ -96,10 +96,10 @@ function App() {
 
 
         <Routes>
-          <Route path="/member1" element={<Page1/>} />
+          {/* <Route path="/member1" element={<Page1/>} />
           <Route path="/member2" element={<Page2 />} />
           <Route path="/member3" element={<Page3 />} />
-          <Route path="/member4" element={<ConfidenceTracker />} />
+          <Route path="/member4" element={<ConfidenceTracker />} /> */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/interview" element={<Interview />} />

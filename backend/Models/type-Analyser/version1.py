@@ -219,6 +219,9 @@ from flask import Flask, request, jsonify
 from huggingface_hub import InferenceClient
 from flask_cors import CORS
 from sentence_transformers import SentenceTransformer, util
+import os
+import threading
+from mainApp import main
 
 app = Flask(__name__)
 CORS(app)
@@ -227,7 +230,7 @@ client = InferenceClient(
     model="mistralai/Mistral-7B-Instruct-v0.3",
     token=""  # replace with your actual token
 )
-
+#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
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 @app.route("/interview", methods=["POST"])
@@ -239,7 +242,7 @@ def generate_interview():
         return jsonify({"error": "Missing topic"}), 400
 
     try:
-        prompt_qs = f"[INST] Generate 5 technical interview questions on {topic}. Number them. [/INST]"
+        prompt_qs = f"[INST] Generate 3 technical interview questions on {topic}. Number them. [/INST]"
         questions_raw = client.text_generation(prompt_qs, max_new_tokens=500, temperature=0.7, top_p=0.9, do_sample=True)
 
         questions = [q.strip().lstrip("1234567890. ").strip() for q in questions_raw.split("\n") if q.strip()]
@@ -277,6 +280,29 @@ def evaluate_answer():
         "user_answer": user_answer,
         "confidence_score": round(score, 2)
     })
+
+
+@app.route("/transcripts-text", methods=["GET"])
+def get_transcript_text():
+    try:
+        # Absolute path
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        transcript_path = r"C:\Users\asus\InterviewMentor\backend\Models\type-Analyser\transcripts.txt"
+
+
+
+        with open(transcript_path, "r", encoding="utf-8") as file:
+            content = file.read()
+        return jsonify({"transcript": content})
+    except Exception as e:
+        print("❌ Error reading transcript.txt:", e)
+        return jsonify({"error": "Failed to read transcript.txt"}), 500
+    
+@app.route('/start')
+def start_live_quiz():
+    thread = threading.Thread(target=main)
+    thread.start()
+    return {"status": "started"}
 
 if __name__ == "__main__":
     app.run(debug=True)

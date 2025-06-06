@@ -112,6 +112,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+
+
 const API_BASE = "http://localhost:5000";
 
 export default function Interview() {
@@ -121,12 +123,13 @@ export default function Interview() {
   const [selectedQA, setSelectedQA] = useState(null);
   const [confidence, setConfidence] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [transcriptText, setTranscriptText] = useState("");
 
   const fetchInterview = async () => {
     try {
       setLoading(true);
       const res = await axios.post(`${API_BASE}/interview`, { topic });
-      console.log("🧠 Interview API response:", res.data);
+      console.log("Interview API response:", res.data);
 
       if (Array.isArray(res.data.qa_pairs)) {
         setQaPairs(res.data.qa_pairs);
@@ -160,10 +163,22 @@ export default function Interview() {
       console.error(err);
     }
   };
+  
+  const fetchTranscriptText = async () => {
+  try {
+    const res = await axios.get(`${API_BASE}/transcripts-text`);
+    setTranscriptText(res.data.transcript || "");
+     setUserAnswer(res.data.transcript || "");
+  } catch (err) {
+    console.error("Failed to fetch transcript text:", err);
+  }
+};
+
+
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center">🧠 AI Interview Confidence Bot</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center"> AI Interview Confidence Evaluator</h1>
 
       <div className="mb-6">
         <input
@@ -211,12 +226,29 @@ export default function Interview() {
             value={userAnswer}
             onChange={(e) => setUserAnswer(e.target.value)}
           />
+          
           <button
             onClick={evaluate}
             className="mt-3 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
           >
             Evaluate Confidence
           </button>
+          
+          <button
+            onClick={fetchTranscriptText}
+              className="mt-3 px-5 mx-2 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+            >
+            Load Transcript
+            </button><br /><br />
+<button
+  onClick={() => fetch("http://localhost:5000/start")}
+  className="bg-blue-500 text-white px-4 py-2 rounded"
+>
+  Start Live Quiz
+</button>
+
+
+
 
           {confidence !== null && (
             <p className="mt-4 text-lg font-semibold text-blue-700">

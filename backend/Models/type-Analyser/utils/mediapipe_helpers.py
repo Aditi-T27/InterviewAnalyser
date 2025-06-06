@@ -135,3 +135,108 @@ def process_pose(frame):
     if results.pose_landmarks:
         return results.pose_landmarks.landmark
     return None
+def calculate_gaze_score(iris_coords, eye_corner_left, eye_corner_right):
+    """
+    Estimate gaze direction based on iris position relative to eye corners.
+    Return score between 0 (looking away) and 1 (looking straight).
+    """
+    eye_width = np.linalg.norm(eye_corner_right - eye_corner_left)
+    iris_dist = np.linalg.norm(iris_coords - ((eye_corner_left + eye_corner_right) / 2))
+
+    # Normalize
+    gaze_score = 1 - (iris_dist / (eye_width / 2))
+    return max(0.0, min(1.0, gaze_score))
+
+
+# def calculate_confidence(ear, mar, eyebrow, pitch, yaw, roll):
+#     """
+#     Calculate a confidence score based on facial metrics.
+#     Score is between 0 and 100.
+#     """
+#     score = 0
+
+#     # EAR: Good if between 0.2 and 0.3
+#     if 0.2 < ear < 0.3:
+#         score += 25
+
+#     # MAR: Good if between 0.3 and 0.6 (speaking mildly or neutral mouth)
+#     if 0.3 < mar < 0.6:
+#         score += 25
+
+#     # Eyebrow Raise: ~0.02 to 0.06 (not too tense, not too relaxed)
+#     if 0.02 < eyebrow < 0.06:
+#         score += 25
+
+#     # Head Pose: Close to neutral
+#     if abs(pitch) < 10 and abs(yaw) < 10 and abs(roll) < 10:
+#         score += 25
+
+#     return score
+
+# def calculate_confidence(avg_ear, mar, eyebrow_raise_val, pitch, yaw, roll):
+#     confidence = 100  # Start at full confidence
+
+#     # EAR: Eye Aspect Ratio
+#     if avg_ear < 0.21:
+#         confidence -= 20  # Possibly blinking or eyes mostly closed
+
+#     # Head orientation
+#     if abs(pitch) > 45 or abs(yaw) > 45:
+#         confidence -= 25  # Not facing camera directly
+
+#     # MAR: Mouth Aspect Ratio
+#     if mar < 0.4:
+#         confidence -= 15  # Closed mouth — possibly not smiling/speaking
+
+#     # Eyebrow raise: if too low, reduce confidence (no expressiveness)
+#     if eyebrow_raise_val < 0.03:
+#         confidence -= 10
+
+#     # Clamp confidence between 0 and 100
+#     confidence = max(0, min(100, confidence))
+
+#     return int(confidence)
+def calculate_confidence(avg_ear, mar, eyebrow_raise_val, pitch, yaw, roll, gaze_score):
+    """
+    Calculate confidence score based on facial metrics and gaze direction.
+    
+    Parameters:
+    - avg_ear: Average Eye Aspect Ratio
+    - mar: Mouth Aspect Ratio
+    - eyebrow_raise_val: Eyebrow raise metric
+    - pitch, yaw, roll: Head orientation angles in degrees
+    - gaze_score: 1.0 if looking straight, <1 if looking away (e.g. 0.0–1.0)
+
+    Returns:
+    - confidence: int (0 to 100)
+    """
+
+    confidence = 100  # Start at max
+
+    # ------------------- Eye Blink (EAR) -------------------
+    if avg_ear < 0.21:
+        confidence -= 20  # Eyes closed or blinking too much
+
+    # ------------------- Head Pose -------------------
+    if abs(pitch) > 30 or abs(yaw) > 30 or abs(roll) > 25:
+        confidence -= 20  # Not facing the screen properly
+
+    # ------------------- Mouth (Smile Detection) -------------------
+    if mar > 0.6:
+        confidence += 10  # Smiling boosts confidence
+    elif mar < 0.3:
+        confidence -= 10  # Neutral or tight lips reduces confidence
+
+    # ------------------- Eyebrow Movement -------------------
+    if eyebrow_raise_val < 0.02:
+        confidence -= 10  # No expressiveness
+
+    # ------------------- Gaze -------------------
+    if gaze_score < 0.8:
+        confidence -= int((1 - gaze_score) * 20)  # Penalize looking away
+
+    # Clamp
+    confidence = max(0, min(100, confidence))
+
+    return int(confidence)
+

@@ -1,6 +1,11 @@
 import sounddevice as sd
 from scipy.io.wavfile import write
 from huggingface_hub import InferenceClient
+import whisper
+import os
+
+# Add the directory containing ffmpeg.exe to the PATH
+os.environ["PATH"] += os.pathsep + r"C:\Users\asus\OneDrive\Documents\ffmpeg-master-latest-win64-gpl[1]\ffmpeg-master-latest-win64-gpl\bin"
 
 # Set your HF token here
 HF_TOKEN = ""
@@ -17,10 +22,18 @@ def record_audio(filename="output.wav"):
     print(f"Recording complete. Saved to {filename}")
 
 def transcribe_audio(filename="output.wav"):
-    client = InferenceClient(model="openai/whisper-large", token=HF_TOKEN)
-    with open(filename, "rb") as f:
-        transcription = client.speech_to_text(f)
-    return transcription
+    model = whisper.load_model("base")  # or 'small', 'medium', 'large'
+
+# Path to your saved audio file
+    audio_path = r"C:\Users\asus\InterviewMentor\backend\Models\whisper\output.wav"
+ # Ensure this file exists
+
+# Transcribe
+    result = model.transcribe(audio_path)
+
+# Output transcription
+    with open("t.txt","w") as f:
+        f.write(result["text"])
 
 if __name__ == "__main__":
     record_audio()
