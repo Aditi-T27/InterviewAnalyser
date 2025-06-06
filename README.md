@@ -11,7 +11,7 @@ The **Interview Confidence Analyzer** is a framework designed to simulate mock i
 - 🎥 **Visual cues** (via webcam)
 - 🎤 **Verbal cues** (via speech transcription enhanced with agentic based dynamic question generation on selected topic and ansswer verification )
 
-This project integrates **Computer Vision (MediaPipe + OpenCV)** and **Natural Language Processing (Whisper)** to provide real-time feedback on how confident and focused the user appears during a live quiz/interview.
+This project integrates **Computer Vision (MediaPipe + OpenCV)** and **Natural Language Processing (Whisper)** alongside an pipeline of LLM based retrival and rendering to provide real-time feedback on how confident and focused the user appears during a live quiz/interview.
 
 ---
 
