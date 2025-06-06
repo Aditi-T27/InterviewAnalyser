@@ -230,7 +230,7 @@ client = InferenceClient(
     model="mistralai/Mistral-7B-Instruct-v0.3",
     token=""  # replace with your actual token
 )
-#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
+
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 @app.route("/interview", methods=["POST"])
