@@ -30,7 +30,7 @@ This project integrates **Computer Vision (MediaPipe + OpenCV)** and **Natural L
 | ----------------------- | --------------------------------------- | --------------------------------------- |
 | 🎥 Video Capture        | OpenCV + Mediapipe                      | Tracks facial cues (eye, mouth, pose)   |
 | 🎙️ Audio Transcription | Whisper (OpenAI)                        | Converts speech to text                 |
-| 🧠 LLM Evaluation       | (Your fine-tuned model or prompt-based) | Checks relevance and quality of answers |
+| 🧠 LLM Evaluation       | (LLM Model) | Checks relevance and quality of answers |
 | 📊 Score Calculation    | Custom Logic                            | Combines visual + verbal scores         |
 | 🌐 Frontend Display     | React                                   | Shows final result via button click     |
 
