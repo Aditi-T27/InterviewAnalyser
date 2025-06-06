@@ -26,16 +26,11 @@ This project integrates **Computer Vision (MediaPipe + OpenCV)** and **Natural L
 
 ## 🧬 System Pipeline
 
-```mermaid
-graph LR
-A[Live Video Feed] --> B[MediaPipe Landmark Detection]
-B --> C[Facial Cues: EAR, MAR, Gaze, Eyebrow Raise]
-C --> D[Visual Confidence Score]
+| Stage                   | Component Used                          | Description                             |
+| ----------------------- | --------------------------------------- | --------------------------------------- |
+| 🎥 Video Capture        | OpenCV + Mediapipe                      | Tracks facial cues (eye, mouth, pose)   |
+| 🎙️ Audio Transcription | Whisper (OpenAI)                        | Converts speech to text                 |
+| 🧠 LLM Evaluation       | (Your fine-tuned model or prompt-based) | Checks relevance and quality of answers |
+| 📊 Score Calculation    | Custom Logic                            | Combines visual + verbal scores         |
+| 🌐 Frontend Display     | React                                   | Shows final result via button click     |
 
-E[Microphone Input] --> F[Whisper Speech-to-Text]
-F --> G[Verbal Analysis (Transcript Confidence) using LLM pipeline and microservice architectured based communication]
-G --> H[Verbal Confidence Score]
-
-D & H --> I[Fusion Layer]
-I --> J[Final Confidence Score]
-J --> K[Display on UI / Save to File]
