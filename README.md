@@ -32,5 +32,5 @@ This project integrates **Computer Vision (MediaPipe + OpenCV)** and **Natural L
 | 🎙️ Audio Transcription | Whisper (OpenAI)                        | Converts speech to text                 |
 | 🧠 LLM Evaluation       | (LLM Model) | Checks relevance and quality of answers |
 | 📊 Score Calculation    | Custom Logic                            | Combines visual + verbal scores         |
-| 🌐 Frontend Display     | React                                   | Shows final result via button click     |
+| 🌐 Frontend Display     | React + Vite                                  | Shows final result via button click     |
 
